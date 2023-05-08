@@ -12,8 +12,19 @@ export class Feedback extends Component {
       addFeedback = ({target: {dataset: {name}}}) => {
         this.setState((pre) => ({
             [name]: pre[name] + 1,
+        }))
+
+        this.countTotalFeedback()
+      }
+
+      countTotalFeedback = () => {
+        this.setState((pre) => ({
             total: pre.total + 1,
         }))
+      }
+
+      countPositiveFeedbackPercentage = () => {
+        return (this.state.good)/(this.state.total) * 100
       }
 
 
@@ -34,7 +45,7 @@ export class Feedback extends Component {
                         <p>Нейтральні: {this.state.neutral}</p>
                         <p>Негативні: {this.state.bad}</p>
                         <p>Відгуків загалом: {this.state.total}</p>
-                        <p>Відсоток негативних відгуків {(this.state.good)/(this.state.total) * 100}%</p>
+                        <p>Відсоток негативних відгуків {this.countPositiveFeedbackPercentage()}%</p>
                     </div>
                     </>
                 }
