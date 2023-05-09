@@ -1,4 +1,7 @@
 import { Component } from "react";
+import { Statistics } from "../Statistics/Statistics";
+import { FeedbackOptions } from "../FeedbackOptions/FeedbackOptions";
+import Notification  from '../Notification/Notification';
 
 export class Feedback extends Component {
     state = {
@@ -6,7 +9,6 @@ export class Feedback extends Component {
         neutral: 0,
         bad: 0,
         total: 0,
-        percent: 0,
       }
 
       addFeedback = ({target: {dataset: {name}}}) => {
@@ -32,24 +34,14 @@ export class Feedback extends Component {
         return (<div>
                 <h1>Залишіть відгук</h1>
                 <div>
-                    <button data-name="good" type="button" onClick={this.addFeedback}>Добре</button>
-                    <button data-name="neutral" type="button" onClick={this.addFeedback}>Нейтрально</button>
-                    <button data-name="bad" type="button" onClick={this.addFeedback}>Погано</button>
+                  <FeedbackOptions options={["good", "neutral", "bad"]} onLeaveFeedback={this.addFeedback}/>
                 </div>
 
                 {
-                    this.state.total === 0 ? <h1>Відгуки ще не залишали</h1> : <>
-                    <h2>Статистика</h2>
-                    <div>
-                        <p>Позитивні: {this.state.good}</p>
-                        <p>Нейтральні: {this.state.neutral}</p>
-                        <p>Негативні: {this.state.bad}</p>
-                        <p>Відгуків загалом: {this.state.total}</p>
-                        <p>Відсоток негативних відгуків {this.countPositiveFeedbackPercentage()}%</p>
-                    </div>
-                    </>
+                    this.state.total === 0 ? 
+                    <Notification  message="There is no feedback"/>: 
+                    <Statistics good={this.state.good} neutral={this.state.neutral} bad={this.state.bad} total={this.state.total} positivePercentage={this.countPositiveFeedbackPercentage}/>
                 }
-
-            </div>)
-    }
+                </div>)}
 }
+    
